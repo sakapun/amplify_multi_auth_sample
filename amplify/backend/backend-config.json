@@ -1,1 +1,26 @@
-{}
+{
+	"auth": {
+		"amplifydeletemereactc73f18bf": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
+		}
+	},
+	"api": {
+		"amplifydeletemereact": {
+			"service": "AppSync",
+			"providerPlugin": "awscloudformation",
+			"output": {
+				"authConfig": {
+					"additionalAuthenticationProviders": [],
+					"defaultAuthentication": {
+						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
+						"userPoolConfig": {
+							"userPoolId": "authamplifydeletemereactc73f18bf"
+						}
+					}
+				}
+			}
+		}
+	}
+}

@@ -10,6 +10,11 @@
             "StackName": "amplify-amplifydeletemereact-dev-220735",
             "StackId": "arn:aws:cloudformation:ap-northeast-1:586387790037:stack/amplify-amplifydeletemereact-dev-220735/92a76b70-862c-11ea-904b-065c56f01aee",
             "AmplifyAppId": "d2ytptyuregbm3"
+        },
+        "categories": {
+            "auth": {
+                "amplifydeletemereactc73f18bf": {}
+            }
         }
     }
 }
