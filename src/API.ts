@@ -408,6 +408,33 @@ export type DeleteCommentMutation = {
   } | null,
 };
 
+export type ListBlog2Query = {
+  listBlogs:  {
+    __typename: "ModelBlogConnection",
+    items:  Array< {
+      __typename: "Blog",
+      name: string,
+      posts:  {
+        __typename: "ModelPostConnection",
+        items:  Array< {
+          __typename: "Post",
+          title: string,
+          id: string,
+          comments:  {
+            __typename: "ModelCommentConnection",
+            items:  Array< {
+              __typename: "Comment",
+              content: string,
+            } | null > | null,
+          } | null,
+        } | null > | null,
+        nextToken: string | null,
+      } | null,
+    } | null > | null,
+    nextToken: string | null,
+  } | null,
+};
+
 export type GetBlogQueryVariables = {
   id: string,
 };
