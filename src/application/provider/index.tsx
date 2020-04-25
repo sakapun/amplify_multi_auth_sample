@@ -3,6 +3,7 @@ import { Action, defaultState, reducer, State } from "../reducer";
 
 import { ThemeProvider } from "@chakra-ui/core";
 import UiTheme from "./UiTheme";
+import {CSSReset} from "@chakra-ui/core/dist";
 
 
 const stateContext = createContext(defaultState);
@@ -14,7 +15,10 @@ export const Provider: React.ComponentType = ({ children }) => {
   return (
     <dispatchContext.Provider value={dispatch}>
       <stateContext.Provider value={state}>
-        <ThemeProvider theme={UiTheme}>{children}</ThemeProvider>
+        <ThemeProvider theme={UiTheme}>
+          <CSSReset />
+          {children}
+        </ThemeProvider>
       </stateContext.Provider>
     </dispatchContext.Provider>
   );
