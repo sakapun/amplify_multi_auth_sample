@@ -413,6 +413,7 @@ export type ListBlog2Query = {
     __typename: "ModelBlogConnection",
     items:  Array< {
       __typename: "Blog",
+      id: string,
       name: string,
       posts:  {
         __typename: "ModelPostConnection",
