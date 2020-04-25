@@ -3,7 +3,7 @@ import {API, graphqlOperation} from "aws-amplify";
 import {CreatePostInput, CreatePostMutationVariables} from "../../API";
 import {createPost} from "../../graphql/mutations";
 
-import {Button, Input} from "@chakra-ui/core/dist";
+import { FormLabel,FormControl,Button, Input} from "@chakra-ui/core/dist";
 
 export const PostAdd = () => {
   const [s, set] = React.useState<CreatePostInput>({
@@ -22,10 +22,13 @@ export const PostAdd = () => {
   },[s])
 
   return (
-    <div>
-      title: <Input onChange={(e: any) => set({...s, title: e.target.value})} value={s.title}/>
+    <>
+      <FormControl>
+        <FormLabel>title</FormLabel>
+        <Input onChange={(e: any) => set({...s, title: e.target.value})} value={s.title}/>
+      </FormControl>
       <Button onClick={setPost} >button</Button>
-    </div>
+    </>
   );
 };
 
