@@ -1,9 +1,9 @@
 import React from 'react';
-import { useQuery } from '../../lib/amplify-query-helper';
+import {useQuery, useSubscription} from '../../lib/amplify-query-helper';
 import {ListBlog2Query} from "../../API";
 import {ListBlog2} from "../../graphql/myquery";
 
-const Index = () => {
+export const ABC = () => {
   const {data, loading, error} = useQuery<ListBlog2Query>(ListBlog2);
   return (
     <div>
@@ -11,5 +11,3 @@ const Index = () => {
     </div>
   );
 };
-
-export default Index;

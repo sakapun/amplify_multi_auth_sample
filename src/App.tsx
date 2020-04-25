@@ -1,12 +1,14 @@
 import React from 'react';
 import './App.css';
-import Index from "./component/ABC";
+import {ABC} from "./component/ABC";
 import { withAuthenticator } from '@aws-amplify/ui-react';
+import {PostAdd} from "./component/PostAdd";
 
 function App() {
   return (
     <div className="App">
-      <Index />
+      <ABC />
+      <PostAdd />
     </div>
   );
 }
