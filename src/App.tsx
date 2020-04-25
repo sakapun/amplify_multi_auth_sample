@@ -1,15 +1,15 @@
 import React from 'react';
-import './App.css';
 import {ABC} from "./component/ABC";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import {PostAdd} from "./component/PostAdd";
+import {Provider} from "./application/provider";
 
 function App() {
   return (
-    <div className="App">
+    <Provider>
       <ABC />
       <PostAdd />
-    </div>
+    </Provider>
   );
 }
 
