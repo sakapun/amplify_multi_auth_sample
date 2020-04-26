@@ -3,12 +3,14 @@ import {ABC} from "./component/ABC";
 import { withAuthenticator } from '@aws-amplify/ui-react';
 import {PostAdd} from "./component/PostAdd";
 import {Provider} from "./application/provider";
+import {IndexPage} from "./presentation/container/IndexPage";
 
 function App() {
   return (
     <Provider>
-      <ABC />
-      <PostAdd />
+      <React.StrictMode>
+        <IndexPage />
+      </React.StrictMode>
     </Provider>
   );
 }
