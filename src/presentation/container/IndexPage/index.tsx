@@ -8,11 +8,12 @@ import {
   Heading,
   Button
 } from '@chakra-ui/core'
-import {useQuery} from "../../../lib/amplify-query-helper";
+import {useSubscription, useQuery} from "../../../lib/amplify-query-helper";
 import {ListBlog2Query} from "../../../API";
 import {ListBlog2} from "../../../graphql/myquery";
 import {LoadingPage} from "../../component/LodingPage";
 import RightPane from "./RightPane";
+import {onUpdatePost} from "../../../graphql/subscriptions";
 
 type IndexPageType = {
   blogs: ListBlog2Query;
@@ -54,6 +55,13 @@ const IndexPageComponent = (props: IndexPageType) => {
 
 export const IndexPage = () => {
   const {data, loading, error} = useQuery<ListBlog2Query>(ListBlog2);
+  const hoge = useSubscription({
+    config: {
+      query: onUpdatePost,
+      key: "onUpdatePost"
+    }
+  })
+  console.log(hoge);
   if (error) {
     return <div>"something wrong ...."</div>;
   }

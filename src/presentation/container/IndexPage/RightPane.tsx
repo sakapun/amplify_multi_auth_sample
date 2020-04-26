@@ -4,7 +4,7 @@ import {
   Heading,
   Button
 } from '@chakra-ui/core'
-import {CreatePostMutationVariables, ListBlog2Query, UpdatePostMutationVariables} from "../../../API";
+import {ListBlog2Query, UpdatePostMutationVariables} from "../../../API";
 import {Input} from "@chakra-ui/core/dist";
 import { API, graphqlOperation } from 'aws-amplify';
 import {updatePost} from "../../../graphql/mutations";
