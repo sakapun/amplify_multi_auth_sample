@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   Grid,
   Box,
@@ -54,14 +54,15 @@ const IndexPageComponent = (props: IndexPageType) => {
 
 
 export const IndexPage = () => {
-  const {data, loading, error} = useQuery<ListBlog2Query>(ListBlog2);
-  const hoge = useSubscription({
+  const {data, loading, error, refetch} = useQuery<ListBlog2Query>(ListBlog2);
+  const [hoge] = useSubscription({
     config: {
       query: onUpdatePost,
       key: "onUpdatePost"
     }
   })
-  console.log(hoge);
+  useEffect(refetch, [JSON.stringify(hoge)])
+
   if (error) {
     return <div>"something wrong ...."</div>;
   }
