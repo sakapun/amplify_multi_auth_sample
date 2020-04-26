@@ -12,12 +12,13 @@ import {useQuery} from "../../../lib/amplify-query-helper";
 import {ListBlog2Query} from "../../../API";
 import {ListBlog2} from "../../../graphql/myquery";
 import {LoadingPage} from "../../component/LodingPage";
+import RightPane from "./RightPane";
 
 type IndexPageType = {
   blogs: ListBlog2Query;
 }
 const IndexPageComponent = (props: IndexPageType) => {
-  const [postId, setPostId] = useState<String>("")
+  const [postId, setPostId] = useState<string>("")
 
   return(
     <Grid
@@ -45,13 +46,7 @@ const IndexPageComponent = (props: IndexPageType) => {
           }))}
         </List>
       </Box>
-      <Box p={8}>
-        <Heading>Title</Heading>
-        <Box>{postId}</Box>
-        <Button mt={6} variantColor="teal">
-          Edit
-        </Button>
-      </Box>
+      <RightPane blogs={props.blogs} postId={postId}/>
     </Grid>
   )
 }
