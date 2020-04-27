@@ -419,12 +419,13 @@ export type ListBlog2Query = {
         __typename: "ModelPostConnection",
         items:  Array< {
           __typename: "Post",
-          title: string,
           id: string,
+          title: string,
           comments:  {
             __typename: "ModelCommentConnection",
             items:  Array< {
               __typename: "Comment",
+              id: string,
               content: string,
             } | null > | null,
           } | null,
@@ -800,5 +801,25 @@ export type OnDeleteCommentSubscription = {
       } | null,
     } | null,
     content: string,
+  } | null,
+};
+
+export type commentFlagmentFragment = {
+  __typename: "Comment",
+  id: string,
+  content: string,
+};
+
+export type postFlagmentFragment = {
+  __typename: "Post",
+  id: string,
+  title: string,
+  comments:  {
+    __typename: "ModelCommentConnection",
+    items:  Array< {
+      __typename: "Comment",
+      id: string,
+      content: string,
+    } | null > | null,
   } | null,
 };
