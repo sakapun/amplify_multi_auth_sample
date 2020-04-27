@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useCallback, useEffect, useState} from 'react'
 import {
   Grid,
   Box,
@@ -8,19 +8,36 @@ import {
   Heading,
   Button
 } from '@chakra-ui/core'
-import {useSubscription, useQuery} from "../../../lib/amplify-query-helper";
-import {ListBlog2Query, postFlagmentFragment} from "../../../API";
-import {ListBlog2} from "../../../graphql/myquery";
+import {useSubscription, useQuery, useCrudSubscription, mutation} from "../../../lib/amplify-query-helper";
+import {CreatePostMutation, CreatePostMutationVariables, ListBlog2Query, postFlagmentFragment} from "../../../API";
+import {ListBlog2, onUpdatePostWithFragment} from "../../../graphql/myquery";
 import {LoadingPage} from "../../component/LodingPage";
 import RightPane from "./RightPane";
-import {onUpdatePost} from "../../../graphql/subscriptions";
+import {onCreatePost, onUpdatePost} from "../../../graphql/subscriptions";
+import {createPost} from "../../../graphql/mutations";
 
 type IndexPageType = {
-  blogs: ListBlog2Query;
+  posts: postFlagmentFragment[];
 }
 const IndexPageComponent = (props: IndexPageType) => {
   const [postId, setPostId] = useState<string>("")
-  const post = props.blogs.listBlogs?.items?.map(b => b?.posts?.items)?.flat().find(p => p?.id === postId);
+
+  const onClickAdd = useCallback(addPost, [])
+
+  const [posts] = useCrudSubscription<postFlagmentFragment>({
+    listData: props.posts,
+    configs: {
+      updatedConfig: {
+        key: "onUpdatePost",
+        query: onUpdatePostWithFragment
+      },
+      createdConfig: {
+        key: "onCreatePost",
+        query: onCreatePost
+      }
+    }
+  })
+  const post = posts.find(p => p?.id === postId);
 
   return(
     <Grid
@@ -37,32 +54,25 @@ const IndexPageComponent = (props: IndexPageType) => {
           height="100%"
           overflowY="auto"
         >
-          {props.blogs.listBlogs?.items?.map( item => item?.posts?.items?.map(post => {
+          {posts.map(post => {
             return (
-              <ListItem h={12} onClick={() => setPostId(post?.id || "")}>
+              <ListItem key={post.id} h={12} onClick={() => setPostId(post.id || "")}>
                 <Link as={"div"} >
-                  {post?.title}
+                  {post.title}
                 </Link>
               </ListItem>
             )
-          }))}
+          })}
         </List>
       </Box>
-      {post ? <RightPane post={post} /> : <Button>add</Button>}
+      {post ? <RightPane post={post} /> : <Button onClick={onClickAdd}>add</Button>}
     </Grid>
   )
 }
 
-
 export const IndexPage = () => {
-  const {data, loading, error, refetch} = useQuery<ListBlog2Query>(ListBlog2);
-  const [hoge] = useSubscription({
-    config: {
-      query: onUpdatePost,
-      key: "onUpdatePost"
-    }
-  })
-  // useEffect(refetch, [JSON.stringify(hoge)])
+  const {data, loading, error} = useQuery<ListBlog2Query>(ListBlog2);
+  const firstPosts: postFlagmentFragment[] = data.listBlogs?.items?.map(b => b?.posts?.items).flat() || [];
 
   if (error) {
     return <div>"something wrong ...."</div>;
@@ -71,5 +81,14 @@ export const IndexPage = () => {
     return <LoadingPage />
   }
 
-  return <IndexPageComponent blogs={data} />
+  return <IndexPageComponent posts={firstPosts} />
+}
+
+export const addPost = () => {
+  mutation<CreatePostMutation,CreatePostMutationVariables>(createPost, {
+    input: {
+      title: Math.random().toString(36).slice(-8),
+      blogID: "01b06603-a8f9-438c-a4c6-8fb7e00fe5d4"
+    }
+  })
 }
