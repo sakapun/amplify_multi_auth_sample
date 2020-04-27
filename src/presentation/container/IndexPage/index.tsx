@@ -9,7 +9,7 @@ import {
   Button
 } from '@chakra-ui/core'
 import {useSubscription, useQuery} from "../../../lib/amplify-query-helper";
-import {ListBlog2Query} from "../../../API";
+import {ListBlog2Query, postFlagmentFragment} from "../../../API";
 import {ListBlog2} from "../../../graphql/myquery";
 import {LoadingPage} from "../../component/LodingPage";
 import RightPane from "./RightPane";
@@ -20,6 +20,7 @@ type IndexPageType = {
 }
 const IndexPageComponent = (props: IndexPageType) => {
   const [postId, setPostId] = useState<string>("")
+  const post = props.blogs.listBlogs?.items?.map(b => b?.posts?.items)?.flat().find(p => p?.id === postId);
 
   return(
     <Grid
@@ -47,7 +48,7 @@ const IndexPageComponent = (props: IndexPageType) => {
           }))}
         </List>
       </Box>
-      <RightPane blogs={props.blogs} postId={postId}/>
+      {post ? <RightPane post={post} /> : <Button>add</Button>}
     </Grid>
   )
 }

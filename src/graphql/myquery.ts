@@ -35,6 +35,6 @@ export const ListBlog2 = gql`
           }
           nextToken
       }
-      ${postFlagment}
   }
+  ${postFlagment}
 `;
