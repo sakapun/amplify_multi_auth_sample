@@ -4,6 +4,11 @@
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": []
+		},
+		"amplifydeletemereact775c8a6f": {
+			"service": "Cognito",
+			"providerPlugin": "awscloudformation",
+			"dependsOn": []
 		}
 	},
 	"api": {
@@ -16,7 +21,7 @@
 					"defaultAuthentication": {
 						"authenticationType": "AMAZON_COGNITO_USER_POOLS",
 						"userPoolConfig": {
-							"userPoolId": "authamplifydeletemereactc73f18bf"
+							"userPoolId": "authamplifydeletemereact775c8a6f"
 						}
 					}
 				}

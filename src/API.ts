@@ -437,6 +437,22 @@ export type ListBlog2Query = {
   } | null,
 };
 
+export type onUpdatePostWithFragmentSubscription = {
+  onUpdatePost:  {
+    __typename: "Post",
+    id: string,
+    title: string,
+    comments:  {
+      __typename: "ModelCommentConnection",
+      items:  Array< {
+        __typename: "Comment",
+        id: string,
+        content: string,
+      } | null > | null,
+    } | null,
+  } | null,
+};
+
 export type GetBlogQueryVariables = {
   id: string,
 };
