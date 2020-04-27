@@ -38,3 +38,12 @@ export const ListBlog2 = gql`
   }
   ${postFlagment}
 `;
+
+export const onUpdatePostWithFragment = gql`
+    subscription onUpdatePostWithFragment {
+        onUpdatePost {
+            ...postFlagment
+        }
+    }
+    ${postFlagment}
+`

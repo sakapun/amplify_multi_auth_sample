@@ -8,6 +8,8 @@ import {ListBlog2Query, postFlagmentFragment, UpdatePostMutationVariables} from 
 import {Input} from "@chakra-ui/core/dist";
 import { API, graphqlOperation } from 'aws-amplify';
 import {updatePost} from "../../../graphql/mutations";
+import {useCrudSubscription} from "../../../lib/amplify-query-helper";
+import {onUpdatePostWithFragment} from "../../../graphql/myquery";
 
 
 export type RightPaneType = {
@@ -17,12 +19,22 @@ const RightPane = ({post}: RightPaneType) => {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [editingTitle, changeVal] = useState<string>("");
 
+  const [[updatedPost]] = useCrudSubscription<postFlagmentFragment>({
+    listData: [post],
+    configs: {
+      updatedConfig: {
+        key: "onUpdatePost",
+        query: onUpdatePostWithFragment
+      }
+    }
+  });
+
   const savePost = useCallback(() => {
     (async () => {
       const updatePostMutationVariables: UpdatePostMutationVariables = {
         input: {
           title: editingTitle,
-          id: post.id
+          id: updatedPost.id
         },
       };
       await API.graphql(graphqlOperation(updatePost, updatePostMutationVariables))
@@ -35,9 +47,9 @@ const RightPane = ({post}: RightPaneType) => {
           <Input value={editingTitle}  onChange={(event: any) => changeVal(event.target.value)}/>
         ) :
         <Heading>
-          {post.title}
+          {updatedPost.title}
         </Heading>}
-      <Box>{post.id}</Box>
+      <Box>{updatedPost.id}</Box>
       {isEditing
        ? (
          <Button mt={6} variantColor="red" onClick={savePost}>
@@ -47,7 +59,7 @@ const RightPane = ({post}: RightPaneType) => {
        : (
           <Button mt={6} variantColor="teal" onClick={() => {
             setEditing(true)
-            changeVal(post.title)
+            changeVal(updatedPost.title)
           }}>
             Edit
           </Button>

@@ -62,7 +62,7 @@ export const IndexPage = () => {
       key: "onUpdatePost"
     }
   })
-  useEffect(refetch, [JSON.stringify(hoge)])
+  // useEffect(refetch, [JSON.stringify(hoge)])
 
   if (error) {
     return <div>"something wrong ...."</div>;
