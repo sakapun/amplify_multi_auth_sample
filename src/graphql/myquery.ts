@@ -40,8 +40,8 @@ export const ListBlog2 = gql`
 `;
 
 export const onUpdatePostWithFragment = gql`
-    subscription onUpdatePostWithFragment($owner: String!) {
-        onUpdatePost(owner: $owner) {
+    subscription onUpdatePostWithFragment {
+        onUpdatePost {
             ...postFlagment
         }
     }

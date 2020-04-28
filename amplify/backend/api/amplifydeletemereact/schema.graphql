@@ -1,6 +1,4 @@
-type Blog @model
-@auth(rules: [
-  {allow: owner},
+type Blog @model @aws_iam @aws_cognito_user_pools @auth(rules:[
   {allow: public, provider: iam}
 ]) {
   id: ID!
@@ -8,9 +6,8 @@ type Blog @model
   posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
 }
 
-type Post @model
-@auth(rules: [
-  {allow: owner},
+type Post @model @aws_iam @aws_cognito_user_pools
+@auth(rules:[
   {allow: public, provider: iam}
 ])
 @key(name: "byBlog", fields: ["blogID"]) {
@@ -22,8 +19,8 @@ type Post @model
 }
 
 type Comment @model
-@auth(rules: [
-  {allow: owner},
+@aws_iam @aws_cognito_user_pools
+@auth(rules:[
   {allow: public, provider: iam}
 ])
 @key(name: "byPost", fields: ["postID", "content"]) {
