@@ -3,9 +3,8 @@ import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import Amplify, {Auth, API, graphqlOperation} from "aws-amplify";
+import Amplify from "aws-amplify";
 import awsExports from "./aws-exports";
-import {listBlogs} from "./graphql/queries";
 
 // Setting
 Amplify.configure(awsExports);
