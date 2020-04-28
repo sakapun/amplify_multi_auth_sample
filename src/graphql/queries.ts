@@ -2,22 +2,6 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
-export const getBlog = /* GraphQL */ `
-  query GetBlog($id: ID!) {
-    getBlog(id: $id) {
-      id
-      name
-      posts {
-        items {
-          id
-          title
-          blogID
-        }
-        nextToken
-      }
-    }
-  }
-`;
 export const listBlogs = /* GraphQL */ `
   query ListBlogs(
     $filter: ModelBlogFilterInput
@@ -28,6 +12,7 @@ export const listBlogs = /* GraphQL */ `
       items {
         id
         name
+        owner
         posts {
           nextToken
         }
@@ -36,24 +21,18 @@ export const listBlogs = /* GraphQL */ `
     }
   }
 `;
-export const getPost = /* GraphQL */ `
-  query GetPost($id: ID!) {
-    getPost(id: $id) {
+export const getBlog = /* GraphQL */ `
+  query GetBlog($id: ID!) {
+    getBlog(id: $id) {
       id
-      title
-      blogID
-      blog {
-        id
-        name
-        posts {
-          nextToken
-        }
-      }
-      comments {
+      name
+      owner
+      posts {
         items {
           id
-          postID
-          content
+          title
+          blogID
+          owner
         }
         nextToken
       }
@@ -74,7 +53,9 @@ export const listPosts = /* GraphQL */ `
         blog {
           id
           name
+          owner
         }
+        owner
         comments {
           nextToken
         }
@@ -83,11 +64,39 @@ export const listPosts = /* GraphQL */ `
     }
   }
 `;
+export const getPost = /* GraphQL */ `
+  query GetPost($id: ID!) {
+    getPost(id: $id) {
+      id
+      title
+      blogID
+      blog {
+        id
+        name
+        owner
+        posts {
+          nextToken
+        }
+      }
+      owner
+      comments {
+        items {
+          id
+          postID
+          content
+          owner
+        }
+        nextToken
+      }
+    }
+  }
+`;
 export const getComment = /* GraphQL */ `
   query GetComment($id: ID!) {
     getComment(id: $id) {
       id
       postID
+      content
       post {
         id
         title
@@ -95,12 +104,14 @@ export const getComment = /* GraphQL */ `
         blog {
           id
           name
+          owner
         }
+        owner
         comments {
           nextToken
         }
       }
-      content
+      owner
     }
   }
 `;
@@ -114,12 +125,14 @@ export const listComments = /* GraphQL */ `
       items {
         id
         postID
+        content
         post {
           id
           title
           blogID
+          owner
         }
-        content
+        owner
       }
       nextToken
     }
