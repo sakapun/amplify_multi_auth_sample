@@ -1,10 +1,10 @@
-type Blog @model {
+type Blog @model @aws_iam @aws_cognito_user_pools {
   id: ID!
   name: String!
   posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
 }
 
-type Post @model @key(name: "byBlog", fields: ["blogID"]) {
+type Post @model @aws_iam @aws_cognito_user_pools @key(name: "byBlog", fields: ["blogID"]) {
   id: ID!
   title: String!
   blogID: ID!
@@ -12,7 +12,7 @@ type Post @model @key(name: "byBlog", fields: ["blogID"]) {
   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
 }
 
-type Comment @model @key(name: "byPost", fields: ["postID", "content"]) {
+type Comment @model @aws_iam @aws_cognito_user_pools @key(name: "byPost", fields: ["postID", "content"]) {
   id: ID!
   postID: ID!
   post: Post @connection(fields: ["postID"])
