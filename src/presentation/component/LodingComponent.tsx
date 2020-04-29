@@ -1,8 +1,8 @@
 import React from 'react'
 import { Spinner, Flex } from '@chakra-ui/core'
 
-export const LoadingPage = () => (
-  <Flex justifyContent="center" alignItems="center" height="100vh">
+export const LoadingComponent = () => (
+  <Flex justifyContent="center" alignItems="center" height="100%">
     <Spinner
       color="whatsapp.500"
       emptyColor="whiteAlpha.500"

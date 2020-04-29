@@ -5,8 +5,7 @@ import AdminPage from "./presentation/container/AdminPage";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 
 function App() {

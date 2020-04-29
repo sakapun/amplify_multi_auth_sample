@@ -1,19 +1,18 @@
-import React, {useCallback, useEffect, useState} from 'react'
+import React, {useCallback, useState} from 'react'
 import {
   Grid,
   Box,
   List,
   ListItem,
   Link,
-  Heading,
   Button
 } from '@chakra-ui/core'
 import {useQuery, useCrudSubscription, mutationCog} from "../../../lib/amplify-query-helper";
 import {CreatePostMutation, CreatePostMutationVariables, ListBlog2Query, postFlagmentFragment} from "../../../API";
 import {ListBlog2, onUpdatePostWithFragment} from "../../../graphql/myquery";
-import {LoadingPage} from "../../component/LodingPage";
+import {LoadingComponent} from "../../component/LodingComponent";
 import RightPane from "./RightPane";
-import {onCreatePost, onUpdatePost} from "../../../graphql/subscriptions";
+import {onCreatePost} from "../../../graphql/subscriptions";
 import {createPost} from "../../../graphql/mutations";
 
 type IndexPageType = {
@@ -78,7 +77,7 @@ export const IndexPage = () => {
     return <div>"something wrong ...."</div>;
   }
   if (loading) {
-    return <LoadingPage />
+    return <Box height={"100vh"}><LoadingComponent /></Box>
   }
 
   return <IndexPageComponent posts={firstPosts} />

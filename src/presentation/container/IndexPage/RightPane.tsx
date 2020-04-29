@@ -9,8 +9,6 @@ import {Input} from "@chakra-ui/core/dist";
 import {updatePost} from "../../../graphql/mutations";
 import {mutationCog, useCrudSubscription} from "../../../lib/amplify-query-helper";
 import {onUpdatePostWithFragment} from "../../../graphql/myquery";
-import {LoginHeader} from "../../component/LoginHeader";
-
 
 export type RightPaneType = {
   post: postFlagmentFragment
@@ -37,11 +35,10 @@ const RightPane = ({post}: RightPaneType) => {
       },
     };
     mutationCog<UpdatePostMutationVariables>(updatePost, updatePostMutationVariables)
-  }, [editingTitle])
+  }, [editingTitle, updatedPost.id])
 
   return (
     <Box p={8}>
-      <LoginHeader />
       {isEditing ? (
           <Input value={editingTitle}  onChange={(event: any) => changeVal(event.target.value)}/>
         ) :
