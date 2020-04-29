@@ -15,7 +15,7 @@ But, I don't make add blog feature.
 
 # React Hooks
 
-very useful hooks
+very useful hooks in libs folder
 
 - useQuery
 - useCrudSubscription
