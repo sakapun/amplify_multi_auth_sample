@@ -15,14 +15,12 @@ import {LoadingPage} from "../../component/LodingPage";
 import RightPane from "./RightPane";
 import {onCreatePost, onUpdatePost} from "../../../graphql/subscriptions";
 import {createPost} from "../../../graphql/mutations";
-import {AmplifyLoadingSpinner, AmplifyAuthenticator, AmplifySignOut} from "@aws-amplify/ui-react";
 
 type IndexPageType = {
   posts: postFlagmentFragment[];
 }
 const IndexPageComponent = (props: IndexPageType) => {
   const [postId, setPostId] = useState<string>("")
-  const [isAuthPane, toggleAuthPane] = useState<boolean>(true);
 
   const onClickAdd = useCallback(addPost, [])
 
@@ -43,7 +41,7 @@ const IndexPageComponent = (props: IndexPageType) => {
 
   return(
     <Grid
-      templateColumns="30% 1fr 1fr"
+      templateColumns="30% 1fr"
       gap={0}
       height="100%"
       templateRows="100%"
@@ -68,12 +66,6 @@ const IndexPageComponent = (props: IndexPageType) => {
         </List>
       </Box>
       {post ? <RightPane post={post} /> : <Button onClick={onClickAdd}>add</Button>}
-      {isAuthPane ? (
-        <Box>
-          <AmplifyAuthenticator  />
-          <AmplifySignOut />
-        </Box>
-      ) : null}
     </Grid>
   )
 }

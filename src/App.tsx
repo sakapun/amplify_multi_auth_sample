@@ -1,17 +1,41 @@
 import React from 'react';
-import { withAuthenticator } from '@aws-amplify/ui-react';
 import {Provider} from "./application/provider";
 import {IndexPage} from "./presentation/container/IndexPage";
+import AdminPage from "./presentation/container/AdminPage";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 function App() {
   return (
     <Provider>
-      <React.StrictMode>
-        <IndexPage />
-      </React.StrictMode>
+      <Router>
+        <React.StrictMode>
+          <Switch>
+            <Route exact path={"/"}>
+              <IndexPage />
+            </Route>
+            <Route path={"/admin"}>
+              <AdminPage />
+            </Route>
+          </Switch>
+        </React.StrictMode>
+      </Router>
     </Provider>
   );
 }
 
-// export default withAuthenticator(App);
+export const Admin = () => {
+  return (
+    <Provider>
+      <React.StrictMode>
+        <AdminPage />
+      </React.StrictMode>
+    </Provider>
+  )
+}
+
 export default (App);

@@ -6,10 +6,10 @@ import {
 } from '@chakra-ui/core'
 import {postFlagmentFragment, UpdatePostMutationVariables} from "../../../API";
 import {Input} from "@chakra-ui/core/dist";
-import { API, graphqlOperation } from 'aws-amplify';
 import {updatePost} from "../../../graphql/mutations";
-import {useCrudSubscription} from "../../../lib/amplify-query-helper";
+import {mutationCog, useCrudSubscription} from "../../../lib/amplify-query-helper";
 import {onUpdatePostWithFragment} from "../../../graphql/myquery";
+import {LoginHeader} from "../../component/LoginHeader";
 
 
 export type RightPaneType = {
@@ -30,19 +30,18 @@ const RightPane = ({post}: RightPaneType) => {
   });
 
   const savePost = useCallback(() => {
-    (async () => {
-      const updatePostMutationVariables: UpdatePostMutationVariables = {
-        input: {
-          title: editingTitle,
-          id: updatedPost.id
-        },
-      };
-      await API.graphql(graphqlOperation(updatePost, updatePostMutationVariables))
-    })()
+    const updatePostMutationVariables: UpdatePostMutationVariables = {
+      input: {
+        title: editingTitle,
+        id: updatedPost.id
+      },
+    };
+    mutationCog<UpdatePostMutationVariables>(updatePost, updatePostMutationVariables)
   }, [editingTitle])
 
   return (
     <Box p={8}>
+      <LoginHeader />
       {isEditing ? (
           <Input value={editingTitle}  onChange={(event: any) => changeVal(event.target.value)}/>
         ) :
