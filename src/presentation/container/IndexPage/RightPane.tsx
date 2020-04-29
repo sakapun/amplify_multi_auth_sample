@@ -8,7 +8,7 @@ import {postFlagmentFragment, UpdatePostMutationVariables} from "../../../API";
 import {Input} from "@chakra-ui/core/dist";
 import { API, graphqlOperation } from 'aws-amplify';
 import {updatePost} from "../../../graphql/mutations";
-import {useCrudSubscriptionCog} from "../../../lib/amplify-query-helper";
+import {useCrudSubscription} from "../../../lib/amplify-query-helper";
 import {onUpdatePostWithFragment} from "../../../graphql/myquery";
 
 
@@ -19,7 +19,7 @@ const RightPane = ({post}: RightPaneType) => {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [editingTitle, changeVal] = useState<string>("");
 
-  const [[updatedPost]] = useCrudSubscriptionCog<postFlagmentFragment>({
+  const [[updatedPost]] = useCrudSubscription<postFlagmentFragment>({
     listData: [post],
     configs: {
       updatedConfig: {

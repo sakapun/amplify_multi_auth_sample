@@ -8,7 +8,7 @@ import {
   Heading,
   Button
 } from '@chakra-ui/core'
-import {useQuery, useCrudSubscriptionCog, mutationCog} from "../../../lib/amplify-query-helper";
+import {useQuery, useCrudSubscription, mutationCog} from "../../../lib/amplify-query-helper";
 import {CreatePostMutation, CreatePostMutationVariables, ListBlog2Query, postFlagmentFragment} from "../../../API";
 import {ListBlog2, onUpdatePostWithFragment} from "../../../graphql/myquery";
 import {LoadingPage} from "../../component/LodingPage";
@@ -26,7 +26,7 @@ const IndexPageComponent = (props: IndexPageType) => {
 
   const onClickAdd = useCallback(addPost, [])
 
-  const [posts] = useCrudSubscriptionCog<postFlagmentFragment>({
+  const [posts] = useCrudSubscription<postFlagmentFragment>({
     listData: props.posts,
     configs: {
       updatedConfig: {

@@ -1,4 +1,4 @@
-type Blog @model @aws_iam @aws_cognito_user_pools @auth(rules:[
+type Blog @model(subscriptions: { level: public }) @aws_iam @aws_cognito_user_pools @auth(rules:[
   {allow: public, provider: iam, operations: [read]},
   {allow: private, provider: userPools}
 ]) {
@@ -7,7 +7,7 @@ type Blog @model @aws_iam @aws_cognito_user_pools @auth(rules:[
   posts: [Post] @connection(keyName: "byBlog", fields: ["id"])
 }
 
-type Post @model
+type Post @model(subscriptions: { level: public })
 @auth(rules:[
   {allow: public, provider: iam, operations: [read]},
   {allow: private, provider: userPools}
@@ -20,7 +20,7 @@ type Post @model
   comments: [Comment] @connection(keyName: "byPost", fields: ["id"])
 }
 
-type Comment @model
+type Comment @model(subscriptions: { level: public })
 @auth(rules:[
   {allow: public, provider: iam, operations: [read]},
   {allow: private, provider: userPools}
