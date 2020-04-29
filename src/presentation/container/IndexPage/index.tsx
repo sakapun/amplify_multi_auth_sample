@@ -8,23 +8,25 @@ import {
   Heading,
   Button
 } from '@chakra-ui/core'
-import {useSubscription, useQuery, useCrudSubscription, mutation} from "../../../lib/amplify-query-helper";
+import {useQuery, useCrudSubscriptionCog, mutationCog} from "../../../lib/amplify-query-helper";
 import {CreatePostMutation, CreatePostMutationVariables, ListBlog2Query, postFlagmentFragment} from "../../../API";
 import {ListBlog2, onUpdatePostWithFragment} from "../../../graphql/myquery";
 import {LoadingPage} from "../../component/LodingPage";
 import RightPane from "./RightPane";
 import {onCreatePost, onUpdatePost} from "../../../graphql/subscriptions";
 import {createPost} from "../../../graphql/mutations";
+import {AmplifyLoadingSpinner, AmplifyAuthenticator, AmplifySignOut} from "@aws-amplify/ui-react";
 
 type IndexPageType = {
   posts: postFlagmentFragment[];
 }
 const IndexPageComponent = (props: IndexPageType) => {
   const [postId, setPostId] = useState<string>("")
+  const [isAuthPane, toggleAuthPane] = useState<boolean>(true);
 
   const onClickAdd = useCallback(addPost, [])
 
-  const [posts] = useCrudSubscription<postFlagmentFragment>({
+  const [posts] = useCrudSubscriptionCog<postFlagmentFragment>({
     listData: props.posts,
     configs: {
       updatedConfig: {
@@ -41,7 +43,7 @@ const IndexPageComponent = (props: IndexPageType) => {
 
   return(
     <Grid
-      templateColumns="30% 1fr"
+      templateColumns="30% 1fr 1fr"
       gap={0}
       height="100%"
       templateRows="100%"
@@ -66,6 +68,12 @@ const IndexPageComponent = (props: IndexPageType) => {
         </List>
       </Box>
       {post ? <RightPane post={post} /> : <Button onClick={onClickAdd}>add</Button>}
+      {isAuthPane ? (
+        <Box>
+          <AmplifyAuthenticator  />
+          <AmplifySignOut />
+        </Box>
+      ) : null}
     </Grid>
   )
 }
@@ -85,7 +93,7 @@ export const IndexPage = () => {
 }
 
 export const addPost = () => {
-  mutation<CreatePostMutation,CreatePostMutationVariables>(createPost, {
+  mutationCog<CreatePostMutation,CreatePostMutationVariables>(createPost, {
     input: {
       title: Math.random().toString(36).slice(-8),
       blogID: "01b06603-a8f9-438c-a4c6-8fb7e00fe5d4"

@@ -4,11 +4,11 @@ import {
   Heading,
   Button
 } from '@chakra-ui/core'
-import {ListBlog2Query, postFlagmentFragment, UpdatePostMutationVariables} from "../../../API";
+import {postFlagmentFragment, UpdatePostMutationVariables} from "../../../API";
 import {Input} from "@chakra-ui/core/dist";
 import { API, graphqlOperation } from 'aws-amplify';
 import {updatePost} from "../../../graphql/mutations";
-import {useCrudSubscription} from "../../../lib/amplify-query-helper";
+import {useCrudSubscriptionCog} from "../../../lib/amplify-query-helper";
 import {onUpdatePostWithFragment} from "../../../graphql/myquery";
 
 
@@ -19,7 +19,7 @@ const RightPane = ({post}: RightPaneType) => {
   const [isEditing, setEditing] = useState<boolean>(false);
   const [editingTitle, changeVal] = useState<string>("");
 
-  const [[updatedPost]] = useCrudSubscription<postFlagmentFragment>({
+  const [[updatedPost]] = useCrudSubscriptionCog<postFlagmentFragment>({
     listData: [post],
     configs: {
       updatedConfig: {

@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { API, graphqlOperation } from 'aws-amplify';
+import {API} from 'aws-amplify';
+import {GRAPHQL_AUTH_MODE} from '@aws-amplify/api';
 import Observable from 'zen-observable-ts';
 
 export type UndefinedGQLType<T> = T | null | undefined;
@@ -16,17 +17,27 @@ export const mutation = async <
   VariablesType extends {} = {}
   >(
   query: string,
+  variables?: VariablesType,
+  authMode?: GRAPHQL_AUTH_MODE
+) => gqlOp<ResultType, VariablesType>(query, variables, authMode);
+
+export const mutationCog = async <
+  ResultType extends {},
+  VariablesType extends {} = {}
+  >(
+  query: string,
   variables?: VariablesType
-) => gqlOp<ResultType, VariablesType>(query, variables);
+) => mutation<ResultType, VariablesType>(query, variables, GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS);
 
 export const gqlOp = async <
   ResultType extends {},
   VariablesType extends {} = {}
   >(
   query: string,
-  variables?: VariablesType
+  variables?: VariablesType,
+  authMode?: GRAPHQL_AUTH_MODE
 ) => {
-  const { data } = (await API.graphql(graphqlOperation(query, variables))) as {
+  const { data } = (await API.graphql({ query, variables, authMode })) as {
     data: ResultType;
   };
   return data;
@@ -203,10 +214,12 @@ export const useSubscription = <
       config,
       itemData,
       dispatch,
+      authMode,
     }: {
   config?: ConfigType<VariablesType>;
   itemData?: ItemType;
   dispatch?: ({ payload }: { payload: ItemType }) => void;
+  authMode?: GRAPHQL_AUTH_MODE;
 } = {}) => {
   const [item, update] = React.useState<ItemType | undefined>(itemData);
 
@@ -214,7 +227,7 @@ export const useSubscription = <
     let unsubscribe;
     if (config) {
       const { query, key, variables } = config;
-      const subscription = API.graphql(graphqlOperation(query, variables));
+      const subscription = API.graphql({ query, variables, authMode });
       if (subscription instanceof Observable) {
         const s = subscription as Observable<{ value: { data: { [key: string]: ItemType } }; }>
         const sub = s.subscribe({
@@ -251,6 +264,7 @@ export const useCrudSubscription = <
   >({
       listData,
       configs,
+      authMode,
     }: {
   listData: ListItemType[];
   configs: {
@@ -258,6 +272,7 @@ export const useCrudSubscription = <
     createdConfig?: ConfigType<VariableType>;
     deletedConfig?: ConfigType<VariableType>;
   };
+  authMode?: GRAPHQL_AUTH_MODE;
 }) => {
   function reducer(
     state: ListItemType[],
@@ -279,17 +294,42 @@ export const useCrudSubscription = <
   useSubscription<ListItemType, VariableType>({
     config: configs.updatedConfig,
     dispatch: ({ payload }) => dispatch({ type: ActionType.update, payload }),
+    authMode,
   });
 
   useSubscription<ListItemType, VariableType>({
     config: configs.createdConfig,
     dispatch: ({ payload }) => dispatch({ type: ActionType.create, payload }),
+    authMode,
   });
 
   useSubscription<ListItemType, VariableType>({
     config: configs.deletedConfig,
     dispatch: ({ payload }) => dispatch({ type: ActionType.delete, payload }),
+    authMode,
   });
 
   return [list];
 };
+
+export const useCrudSubscriptionCog = <
+  ListItemType extends { id: string },
+  VariableType extends {} = {}
+  >({
+      listData,
+      configs,
+    }: {
+  listData: ListItemType[];
+  configs: {
+    updatedConfig?: ConfigType<VariableType>;
+    createdConfig?: ConfigType<VariableType>;
+    deletedConfig?: ConfigType<VariableType>;
+  };
+  authMode?: GRAPHQL_AUTH_MODE;
+}) => {
+  return useCrudSubscription<ListItemType, VariableType>({
+    listData,
+    configs,
+    authMode: GRAPHQL_AUTH_MODE.AMAZON_COGNITO_USER_POOLS
+  });
+}
