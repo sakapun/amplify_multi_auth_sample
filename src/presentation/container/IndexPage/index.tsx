@@ -77,7 +77,7 @@ export const IndexPage = () => {
     return <div>"something wrong ...."</div>;
   }
   if (loading) {
-    return <Box height={"100vh"}><LoadingComponent /></Box>
+    return <LoadingComponent />
   }
 
   return <IndexPageComponent posts={firstPosts} />

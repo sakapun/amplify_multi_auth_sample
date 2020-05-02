@@ -7,23 +7,26 @@ import {
   Switch,
   Route
 } from "react-router-dom";
+import {Box} from "@chakra-ui/core/dist";
 
 function App() {
   return (
-    <Provider>
-      <Router>
-        <React.StrictMode>
-          <Switch>
-            <Route exact path={"/"}>
-              <IndexPage />
-            </Route>
-            <Route path={"/admin"}>
-              <AdminPage />
-            </Route>
-          </Switch>
-        </React.StrictMode>
-      </Router>
-    </Provider>
+    <Box height={"100vh"}>
+      <Provider>
+        <Router>
+          <React.StrictMode>
+            <Switch>
+              <Route exact path={"/"}>
+                <IndexPage />
+              </Route>
+              <Route path={"/admin"}>
+                <AdminPage />
+              </Route>
+            </Switch>
+          </React.StrictMode>
+        </Router>
+      </Provider>
+    </Box>
   );
 }
 
